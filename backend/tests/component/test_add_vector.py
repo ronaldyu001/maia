@@ -1,7 +1,7 @@
 import pytest
 import asyncio
 
-from backend.context_engineering.RAG.vector_db.vdb_faiss import FaissHandler
+from backend.Maia.hood.context_engineering.RAG.handlers.faiss_handler import FaissHandler
 
 
 test_data = [

@@ -13,9 +13,7 @@ def generate_context_window( llm: str, size: int, session_id: str ) -> list[dict
     - "maia-llama3"
     """
     # ----- calculate size of each section of context window -----
-    # leave 30% of window for Maia's reply -----
-    size_TOTAL = ceil( size * 0.7 )
-
+    size_TOTAL = ceil( size * 0.7 ) # leave 30% of window for Maia's reply
     size_RULES = ceil( size_TOTAL * 0.075 )
     size_TOOL_CONTRACT = ceil( size_TOTAL * 0.1 )
     size_TASK_FRAMING = ceil( size_TOTAL * 0.1 )
@@ -23,27 +21,15 @@ def generate_context_window( llm: str, size: int, session_id: str ) -> list[dict
     size_LONGTERM_RECALL = ceil( size_TOTAL * 0.25 )
     size_CONVERSATIONAL_TRANSCRIPT = ceil( size_TOTAL * 0.4 )
 
-
-    # ----- Rules [ 5% ] -----
+    # ----- generate non-RAG components for context window -----
     RULES = generate_rules( llm=llm, size=size_RULES, session_id=session_id )
-
-    # ----- Tool contract [ 5% ] -----
     TOOL_CONTRACT = generate_tool_contract( llm=llm, size=size_TOOL_CONTRACT )
-
-    # ----- Task Framing [ 5% ] -----
     TASK = generate_task( llm=llm, size=size_TASK_FRAMING )
-
-    # ----- Pinned Facts [ 10% ] -----
-    PINNED_FACTS = False
-
-    # ----- Goals [ 10% ] -----
-    GOALS = False
-    
-    # ----- Longterm Recall [ 25% ] -----
-    LONGTERM_RECALL = False
-
-    # ----- Conversational History [ 40% ] -----
     CONVERSATIONAL_HISTORY = generate_conversational_transcript( llm=llm, session_id=session_id, size=size_CONVERSATIONAL_TRANSCRIPT )
+
+    # ----- generata RAG components for context window -----
+    query = CONVERSATIONAL_HISTORY[-1]["content"]
+    
 
     # ----- Context Window -----
     CONTENT = [ RULES, TOOL_CONTRACT, TASK, PINNED_FACTS, GOALS, LONGTERM_RECALL, CONVERSATIONAL_HISTORY ]

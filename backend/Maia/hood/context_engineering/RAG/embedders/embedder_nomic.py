@@ -12,7 +12,6 @@ class NomicEmbedder():
 
     Member Functions
     - encode
-    - decode
     """
     def __init__(self, model_name: str = "nomic-ai/nomic-embed-text-v1.5"):
         # ----- Creates model and gets dimensions -----

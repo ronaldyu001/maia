@@ -1,8 +1,9 @@
 import pytest
 
-from backend.context_engineering.custom_context_window import generate_custom_context_window
-from backend.context_engineering.variables import RULES, TOOL_CONTRACT
-from backend.context_engineering.sections._conversation_history._conversation import generate_conversational_transcript
+from backend.Maia.hood.context_engineering.contex_window.custom_context_window import generate_custom_context_window
+from backend.Maia.hood.context_engineering.config import RULES, TOOL_CONTRACT
+# Note: We need to update this path once we confirm where _conversation_history is moved to
+from backend.Maia.hood.context_engineering.sections._conversation_history._conversation import generate_conversational_transcript
 
 
 def test_custom_window():

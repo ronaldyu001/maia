@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from backend.engine_wrappers.ollama.wrapper_ollama import OllamaModel
+from backend.Maia.hood.engine_wrappers.ollama.wrapper_ollama import OllamaModel
 from backend.routes import chat
 from fastapi.middleware.cors import CORSMiddleware
 
