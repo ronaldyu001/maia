@@ -1,3 +1,9 @@
+# ----- Memory Paths -----
+SHORT_TERM_conversations = "Maia/memory/raw/short_term/conversations"
+LONG_TERM_conversations = "Maia/memory/raw/long_term/conversations"
+
+
+# ----- Contracts -----
 RULES = """
 Maia's Core Rules
 Identity & scope:

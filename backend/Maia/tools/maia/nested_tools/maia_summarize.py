@@ -1,10 +1,12 @@
 from pathlib import Path
+from utility_wrappers.LoggingWrapper.LoggingWrapper import Logger
+from math import floor
 
-from backend.context_engineering.sections._task.variables import SUMMARIZE_CONVERSATION
-from backend.context_engineering.custom_windows.summary_window import generate_summarize_context_window
-from backend.engine_wrappers.ollama.wrapper_ollama import OllamaModel
-from backend.context_engineering.helpers.transcript import create_transcript, trim_transcript
-from backend.tools.memory.short_term import load_conversation
+from Maia.hood.context_engineering.context_window.sections._task.variables import SUMMARIZE_CONVERSATION
+from Maia.hood.context_engineering.context_window.custom_windows.Summarize_Conversation.summary_window import generate_summarize_context_window
+from Maia.hood.engine_wrappers.ollama.wrapper_ollama import OllamaModel
+from Maia.hood.context_engineering.helpers.transcript import create_transcript, autosize_transcript, trim_transcript
+from Maia.tools.memory.conversations import load_conversation
 
 
 async def async_maia_summarize_conversation( llm: str, ctx_wdw_size: int, session_id: str, task=SUMMARIZE_CONVERSATION, memory_type=["short_term", "long_term"] ) -> str:
@@ -26,12 +28,16 @@ async def async_maia_summarize_conversation( llm: str, ctx_wdw_size: int, sessio
 
     try:
         # ----- determine memory type and set target path -----
-        if memory_type == "short_term":
-            TARGET = Path( f"backend/memory/raw/short_term/conversations" ) / f"{session_id}.json"
-        elif memory_type == "long_term":
-            TARGET = Path( f"backend/memory/raw/long_term/conversations" ) / f"{session_id}.json"
-        else:
-            raise Exception( f"Invalid memory type given." )
+        if memory_type == "short_term": TARGET = Path( f"backend/memory/raw/short_term/conversations" ) / f"{session_id}.json"
+        elif memory_type == "long_term": TARGET = Path( f"backend/memory/raw/long_term/conversations" ) / f"{session_id}.json"
+        else: raise Exception( f"Invalid memory type given." )
+
+        # ----- create transcript: str of conversation to summarize -----
+        conversation_size = floor(ctx_wdw_size * 0.5)
+        conversation = load_conversation(session_id=session_id)
+        conversation = autosize_transcript(transcript=conversation, size=conversation_size, llm=llm)
+        conversation_list_str = create_transcript(turns=conversation)        
+        CONVERSATIONAL_TRANSCRIPT = trim_transcript(transcript=conversation_list_str, num_turns=len(conversation_list_str))
         
         # ----- create context window -----
         window = generate_summarize_context_window(
@@ -39,15 +45,17 @@ async def async_maia_summarize_conversation( llm: str, ctx_wdw_size: int, sessio
             size=ctx_wdw_size,
             session_id=session_id,
             TASK_FRAMING=SUMMARIZE_CONVERSATION,
+            CONVERSATIONAL_TRANSCRIPT=CONVERSATIONAL_TRANSCRIPT,
             RULES_ratio=0.1,
             TASK_FRAMING_ratio=0.1,
             CONVERSATIONAL_TRANSCRIPT_ratio=0.5
         )
 
         # ----- get summary from Maia -----
-        summary = await Maia.async_chat( prompt=window )
+        summary = Maia.chat( prompt=window )
         return summary
 
     except Exception as err:
-        return {"response": f"{type(err).__name__}: {err}"}
+        Logger.error(repr(err))
+        return {"response": f"{type(err).__name__}: {repr(err)}"}
 

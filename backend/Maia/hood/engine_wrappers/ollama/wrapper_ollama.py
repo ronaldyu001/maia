@@ -1,9 +1,9 @@
-from backend.models.base import BaseModel
+from Maia.hood.flavors.base import BaseModel
 from typing import List
 import requests
 import asyncio
 
-from backend.config import (
+from config import (
     OLLAMA_HOST,
     OLLAMA_MODEL_NAME
 )

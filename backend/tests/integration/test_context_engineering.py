@@ -1,5 +1,5 @@
 import pytest
-from backend.Maia.hood.context_engineering.contex_window.context_window import generate_context_window
+from Maia.hood.context_engineering.context_window.generate_generic_window import generate_context_window
 
 def test_context_engineering():
     """

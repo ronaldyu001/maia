@@ -1,4 +1,5 @@
-from backend.tools.memory.conversational_to_longterm import conversational_to_longterm
+from Maia.tools.memory.conversations import conversational_to_longterm
+from Maia.hood.context_engineering.config import SHORT_TERM_conversations
 from pathlib import Path
 
 
@@ -14,7 +15,7 @@ def commit_session( session_id: str, include_raw=True ):
     """
 
     # ----- paths -----
-    CONVERSATIONAL = Path( f'/Users/ronaldyu/maia/backend/memory/raw/short_term/conversations' )
+    CONVERSATIONAL = Path( SHORT_TERM_conversations )
     TARGET = CONVERSATIONAL / f"{session_id}.json"
 
     try:

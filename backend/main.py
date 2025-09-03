@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from backend.Maia.hood.engine_wrappers.ollama.wrapper_ollama import OllamaModel
-from backend.routes import chat
+from Maia.hood.engine_wrappers.ollama.wrapper_ollama import OllamaModel
+from routes.chat import chat
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.startup import load_llama3
+from startup import load_llama3
 
 
 # ----- create FastAPI app -----

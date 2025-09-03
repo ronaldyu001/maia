@@ -1,4 +1,6 @@
-from backend.context_engineering.helpers.token_counter import token_counter
+from utility_wrappers.LoggingWrapper.LoggingWrapper import Logger
+
+from Maia.hood.context_engineering.helpers.token_counter import token_counter
 from math import ceil, floor
 
 
@@ -6,6 +8,7 @@ def create_transcript(turns: list[dict]) -> list[str]:
     """
     Converts transcript from a list of dicts into a list of strings.
     """
+    Logger.info("Converting transcript from list[dict] to list[str].")
     try:
         return [ f"{t["role"].capitalize()}: {t['content']}" for t in turns ]
     except Exception as err:
@@ -17,6 +20,7 @@ def trim_transcript( transcript: list[str], num_turns: int ) -> str:
     Shortens transcript (list of strings) to desired num_turns and returns as string.\n
     Prioritizes recency.
     """
+    Logger.info("Trimming transcript.")
     start_index = len(transcript) - num_turns
     return "\n".join( transcript[ start_index: ] )
 
@@ -25,6 +29,7 @@ def autosize_transcript( transcript: list[dict], size: int, llm: str ) -> list[d
     """
     Automatically resizes a transcript to the desired token count for a desired llm.
     """
+    Logger.info("Autosizing transcript.")
     # ----- token size bounds, num_turns -----
     num_turns = len(transcript)
     max_turns = num_turns

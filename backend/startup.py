@@ -1,4 +1,4 @@
-from backend.Maia.hood.llm_managers.maia_llama3 import Maia_llama3_Manager
+from Maia.hood.llm_managers.maia_llama3 import Maia_llama3_Manager
 
 
 """
