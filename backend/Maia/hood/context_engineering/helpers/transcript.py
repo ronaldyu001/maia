@@ -8,19 +8,23 @@ def create_transcript(turns: list[dict]) -> list[str]:
     """
     Converts transcript from a list of dicts into a list of strings.
     """
-    Logger.info("Converting transcript from list[dict] to list[str].")
+    Logger.info("Converting transcript from list[dict] to list[str]")
     try:
         return [ f"{t["role"].capitalize()}: {t['content']}" for t in turns ]
     except Exception as err:
         return False
 
 
-def trim_transcript( transcript: list[str], num_turns: int ) -> str:
+def trim_transcript( transcript: list[str], num_turns: int, stringify: bool = True ) -> str:
     """
     Shortens transcript (list of strings) to desired num_turns and returns as string.\n
     Prioritizes recency.
+
+    Args
+    - stringify: bool # stringifies list if True
     """
     Logger.info("Trimming transcript.")
+    if stringify: num_turns = len(transcript)
     start_index = len(transcript) - num_turns
     return "\n".join( transcript[ start_index: ] )
 

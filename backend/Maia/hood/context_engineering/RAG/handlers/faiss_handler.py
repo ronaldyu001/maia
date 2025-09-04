@@ -3,10 +3,10 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 from typing import Literal, Optional
 
-from backend.context_engineering.RAG.helpers.generic.normalize_data import normalize_embed_input, normalize_meta_input
-from backend.context_engineering.helpers.uuid4_to_int64 import uuids_to_ids64
-from backend.tools.generic._time import time_now
-from backend.context_engineering.RAG.embedders.embedder_nomic import NomicEmbedder
+from Maia.hood.context_engineering.RAG.helpers.generic.normalize_data import normalize_embed_input, normalize_meta_input
+from Maia.hood.context_engineering.helpers.uuid4_to_int64 import uuids_to_ids64
+from Maia.tools.generic._time import time_now
+from Maia.hood.context_engineering.RAG.embedders.embedder_nomic import NomicEmbedder
 
 
 # ===== Schemas =====

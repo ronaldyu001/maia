@@ -20,6 +20,7 @@ from Maia.hood.context_engineering.helpers.add_turn import add_turn
 from Maia.tools.generic._time import time_now
 from Maia.tools.generic._json import try_parse_json
 from routes.chat.helpers.error_handlers import _post
+from config import OLLAMA_MODEL_NAME
 
 
 # ===== router and model =====
@@ -49,11 +50,10 @@ async def chat(self, req: ChatRequest):
     last_session_id = get_last_conversation_id()
     current_session_id = req.session_id
     message = req.message
-    llm = "maia-llama3:v1"
+    llm = OLLAMA_MODEL_NAME
 
     # ----- update last_conversation.text with this session id -----
-    if current_session_id is not last_session_id:
-        set_last_conversation_id( current_session_id )
+    if current_session_id is not last_session_id: set_last_conversation_id( current_session_id )
 
     # ----- add and save new turn to conversational memory (used in context window) -----
     turns = add_turn( session_id=current_session_id, role="user", content=message )

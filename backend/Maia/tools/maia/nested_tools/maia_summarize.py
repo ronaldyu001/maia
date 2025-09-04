@@ -1,12 +1,23 @@
 from pathlib import Path
 from utility_wrappers.LoggingWrapper.LoggingWrapper import Logger
 from math import floor
+import re, json
+
 
 from Maia.hood.context_engineering.context_window.sections._task.variables import SUMMARIZE_CONVERSATION
 from Maia.hood.context_engineering.context_window.custom_windows.Summarize_Conversation.summary_window import generate_summarize_context_window
 from Maia.hood.engine_wrappers.ollama.wrapper_ollama import OllamaModel
 from Maia.hood.context_engineering.helpers.transcript import create_transcript, autosize_transcript, trim_transcript
 from Maia.tools.memory.conversations import load_conversation
+
+
+# helpers
+def extract_summary(raw_output: str):
+    try:
+        match = re.search(r"<JSON>(.*?)</JSON>", raw_output, re.S)
+        if not match: raise ValueError("No JSON block found")
+        return json.loads(match.group(1).strip())
+    except: return False
 
 
 async def async_maia_summarize_conversation( llm: str, ctx_wdw_size: int, session_id: str, task=SUMMARIZE_CONVERSATION, memory_type=["short_term", "long_term"] ) -> str:
@@ -52,7 +63,9 @@ async def async_maia_summarize_conversation( llm: str, ctx_wdw_size: int, sessio
         )
 
         # ----- get summary from Maia -----
-        summary = Maia.chat( prompt=window )
+        summary = extract_summary(raw_output=Maia.chat( prompt=window ))
+        if not summary: raise Exception("Summary unable to be processed.")
+        print(summary)
         return summary
 
     except Exception as err:

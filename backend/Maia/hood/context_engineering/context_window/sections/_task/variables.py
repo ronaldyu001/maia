@@ -3,25 +3,28 @@ Current task: Be helpful and concise. Ask at most one clarifying question.
 """
 
 SUMMARIZE_CONVERSATION = """
-Current task:
-- Produce a concise summary in 1–6 bullet points.
-- No preamble, no conclusions, no continuation of the conversation.
-- Output plain text bullets only.
+Context:
+- 'User' is me, Ronald, 'Assistant' is you, Maia.
 
-Granularity vs. coherence (for embedding/RAG):
-- Wide conversations → 1 bullet per distinct topic (compact bullets).
-- Narrow conversations → fewer, richer bullets that capture the full idea; only split if ideas are clearly distinct.
-- Aim for 1–5 sentences per bullet. Preserve enough detail to be self-contained.
+Task:
+- Summarize the conversation in 1–6 items.
+- Each item must capture Ronald’s problem/question and/or Maia’s reply/solution.
+- Merge related points into one item; only split if topics are clearly distinct.
+- Skip filler, repetition, or speculation.
+- Use neutral past-tense "notes" style.
 
-Content selection:
-- Focus on what was actually discussed: key facts, problems raised, solutions proposed, decisions made, constraints, or follow-ups.
-- Omit filler, pleasantries, repeated phrasing, and speculation.
-- Do not rephrase as advice or instructions — capture what was said.
+Output Format:
+- Return ONLY valid JSON inside <JSON> ... </JSON> delimiters.
+- JSON must be a list of strings.
+- No text, labels, or explanations outside the delimiters.
 
-Clarity:
-- Each bullet should express a single cohesive idea and stand alone without the transcript. i.e. a problem and its solution.
-- Use neutral, past-tense “notes” style (e.g., “Ronald Discussed/Did/Asked X and I Y”) rather than prescriptive wording.
-- Use plain, direct language; avoid jargon unless central to the discussion.
+Example:
+<JSON>
+[
+  "Ronald tried running pytest but modules were not found. Maia suggested setting PYTHONPATH or using the -p option.",
+  "Ronald asked about generating parameters in pytest. Maia explained fixtures can be used for setup/teardown and parameter generation."
+]
+</JSON>
 
 The following text is the conversation to summarize:
 """

@@ -37,8 +37,7 @@ def generate_context_window( llm: str, size: int, session_id: str ) -> list[dict
     CONTENT = [ RULES, TOOL_CONTRACT, TASK, CONVERSATIONAL_HISTORY ]
     CONTEXT_WINDOW = []
     for section in CONTENT:
-        if isinstance( section, list ):
-            CONTEXT_WINDOW += section
+        if isinstance( section, list ): CONTEXT_WINDOW += section
 
     print( CONTEXT_WINDOW )
 

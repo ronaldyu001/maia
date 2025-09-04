@@ -46,10 +46,7 @@ class OllamaModel( BaseModel ):
         """
 
         # Convert string prompt to proper message format
-        if isinstance(prompt, str):
-            messages = [{"role": "user", "content": prompt}]
-        else:
-            messages = prompt
+        messages = [{"role": "user", "content": prompt}] if isinstance(prompt, str) else prompt
 
         try:
             # Call Ollama's API

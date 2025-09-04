@@ -3,11 +3,10 @@ MAIA_LLAMA3_V1 = "/Users/ronaldyu/.ollama/models/blobs/sha256-6a0746a1ec1aef3e7e
 
 # ----- Maia's llms -----
 llms = {
-    "llama3": "maia-llama3:v1",
-    "mixtral": "maia-mixtral:v1",
-    "deepseek": "maia:deepseek:v1"
+    1: "maia-llama3:v1",
+    2: "maia-deepseek:v1"
 }
 
 # ----- Ollama Wrapper Variables -----
 OLLAMA_HOST = "http://localhost:11434"
-OLLAMA_MODEL_NAME = llms["llama3"]
+OLLAMA_MODEL_NAME = llms[1]
